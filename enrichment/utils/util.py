@@ -67,7 +67,7 @@ class Converter:
 		df.to_json(output_file, orient='records')
 	
 	@staticmethod
-	def json_parquet(file, output_file):
+	def json_to_parquet(file, output_file):
 		import pandas as pd
 
 		df = pd.read_parquet(file)
