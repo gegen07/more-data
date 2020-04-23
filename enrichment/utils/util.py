@@ -61,22 +61,14 @@ class Converter:
 
 	@staticmethod
 	def csv_to_json(file, output_file):
-		import csv
-		csv.field_size_limit(2147483647)
+		import pandas as pd
 
-		arr = []
-
-		with open(file) as f:
-			reader = csv.DictReader(f)
-			for row in reader:
-				arr.append(row)
-
-		with open(output_file, "w+") as out:
-			json.dump(arr, out, ensure_ascii=False)
+		df = pd.read_csv(file)
+		df.to_json(output_file, orient='records')
 	
 	@staticmethod
 	def json_parquet(file, output_file):
 		import pandas as pd
 
 		df = pd.read_parquet(file)
-		df.to_json(output_file)
+		df.to_json(output_file, orient='records')
