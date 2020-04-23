@@ -41,6 +41,23 @@ class Converter:
 					pass
 			df = pd.DataFrame(dic_flattened)
 			df.to_csv(output_path+str(i)+".csv")
+	
+	@staticmethod
+	def json_enriched_to_parquet(file, output_file):
+		import pandas as pd
+		from flatten_json import flatten
+
+		files = glob(path)
+
+		for i, file in enumerate(files):
+			dic_flattened = []
+			for d in read_json_from_file(file):
+				try:
+					dic_flattened.append(flatten(d))
+				except AssertionError as e:
+					pass
+			df = pd.DataFrame(dic_flattened)
+			df.to_parquet(output_file + str(i) + '.parquet.gzip', compression='gzip') 
 
 	@staticmethod
 	def csv_to_json(file, output_file):
@@ -56,3 +73,10 @@ class Converter:
 
 		with open(output_file, "w+") as out:
 			json.dump(arr, out, ensure_ascii=False)
+	
+	@staticmethod
+	def json_parquet(file, output_file):
+		import pandas as pd
+
+		df = pd.read_parquet(file)
+		df.to_json(output_file)
